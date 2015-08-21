@@ -4,6 +4,7 @@ import getopt
 import os
 from selenium import webdriver
 import sys
+import time
 
 
 RESET_FLAGS = ["-r", "--reset"]
@@ -54,6 +55,7 @@ except getopt.GetoptError:
     exit_with_error()
 # Start the browser and enter the password
 driver = webdriver.Chrome()
+driver.implicitly_wait(10)
 driver.get(os.environ["ROUTER_UI_URL"])
 passwd = driver.find_element_by_name("authpasswd")
 passwd.send_keys(os.environ["ROUTER_UI_PASSWD"])
@@ -69,5 +71,6 @@ for opt, arg in opts:
     elif opt in WIFI_FLAGS and arg in WIFI_OPTIONS:
         change_wifi_status(driver, arg)
 # Close browser and exit
+time.sleep(1)
 driver.quit()
 sys.exit()
